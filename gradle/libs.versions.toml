@@ -13,7 +13,7 @@ navigationUiKtx = "2.6.0"
 rajawali = "1.1.970"
 
 [libraries]
-rajawali = { group = "org.rajawali3d", name = "rajawali", version.ref = "rajawali" }
+rajawali = { group = "org.rajawali3d", name = "rajawali", version = "1.1.970" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
