@@ -1,0 +1,106 @@
+To add a 3D plot to SecondFragment and allow for interaction with the graph, you can use a library like MPAndroidChart for 2D graphs or Rajawali for 3D graphics. For this task, Rajawali is more suitable.  Here are the steps to achieve this:
+
+
+1. Add Rajawali dependency: Add the following dependency to your build.gradle file:
+
+dependencies {
+    implementation 'org.rajawali3d:rajawali:1.1.970'
+}
+
+2. Create a custom Renderer class: This class will handle the rendering of the 3D object.
+package com.example.myapplication
+
+import android.content.Context
+import org.rajawali3d.renderer.Renderer
+import org.rajawali3d.scene.Scene
+import org.rajawali3d.math.vector.Vector3
+import org.rajawali3d.primitives.Sphere
+import org.rajawali3d.materials.Material
+import org.rajawali3d.lights.DirectionalLight
+
+class MyRenderer(context: Context) : Renderer(context) {
+
+    override fun initScene() {
+        val light = DirectionalLight(1.0, 0.2, -1.0)
+        light.setColor(1.0, 1.0, 1.0)
+        light.setPower(2.0)
+        currentScene.addLight(light)
+
+        val material = Material()
+        val sphere = Sphere(1.0, 24, 24)
+        sphere.material = material
+        currentScene.addChild(sphere)
+
+        currentCamera.position = Vector3(0.0, 0.0, 6.0)
+        currentCamera.lookAt(Vector3(0.0, 0.0, 0.0))
+    }
+
+    override fun onRenderFrame(glUnused: GL10?) {
+        super.onRenderFrame(glUnused)
+        currentScene.children[0].rotate(Vector3(1.0, 1.0, 0.0), 1.0)
+    }
+}
+
+3.Update SecondFragment to use Rajawali: Modify SecondFragment to include a SurfaceView for rendering the 3D object.
+
+package com.example.myapplication
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.example.myapplication.databinding.FragmentSecondBinding
+import org.rajawali3d.view.SurfaceView
+
+class SecondFragment : Fragment() {
+
+    private var _binding: FragmentSecondBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var renderer: MyRenderer
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentSecondBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val surfaceView = SurfaceView(requireContext())
+        surfaceView.setFrameRate(60.0)
+        surfaceView.setRenderMode(SurfaceView.RENDERMODE_WHEN_DIRTY)
+        binding.root.addView(surfaceView)
+
+        renderer = MyRenderer(requireContext())
+        surfaceView.setSurfaceRenderer(renderer)
+
+        binding.buttonSecond.setOnClickListener {
+            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+}
+
+4.Update fragment_second.xml: Ensure the layout file has a container for the SurfaceView.
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SecondFragment">
+
+    <Button
+        android:id="@+id/buttonSecond"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Go to First Fragment" />
+
+</FrameLayout>
+This setup will create a basic 3D scene with a rotating sphere. You can modify the MyRenderer class to plot your 3D function by adding vertices and shapes based on the input function.
