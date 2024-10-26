@@ -10,8 +10,10 @@ material = "1.10.0"
 constraintlayout = "2.1.4"
 navigationFragmentKtx = "2.6.0"
 navigationUiKtx = "2.6.0"
+rajawali = "1.1.970"
 
 [libraries]
+rajawali = { group = "org.rajawali3d", name = "rajawali", version.ref = "rajawali" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

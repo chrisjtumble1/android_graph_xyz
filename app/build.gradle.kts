@@ -49,4 +49,10 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation(libs.rajawali)
+
+    //implementation("org.rajawali3d:rajawali:1.1.970")
+    //The commented out implementation was the first suggestion to add the Rajawali library.
+    //but gave an error that the reference could not be recognized.
+    //so it was changed to the implementation(libs.rajawali) which is the correct reference.
 }
